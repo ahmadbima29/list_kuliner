@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:list_kuliner/http_helper.dart';
 import 'package:list_kuliner/makanan.dart';
 import 'package:list_kuliner/styles.dart';
 
 class DetailPage extends StatelessWidget {
   final Makanan makanan;
-
-  DetailPage({super.key, required this.makanan});
+  HttpHelper api = HttpHelper();
+  DetailPage({super.key, required this.makanan, required this.api});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class DetailPage extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Image.asset(makanan.gambarUtama, scale: 0.5),
+                  Image.network(api.url + makanan.gambarUtama, scale: 0.5),
                   Container(
                     margin: EdgeInsets.all(20),
                     child: Row(

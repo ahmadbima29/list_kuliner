@@ -1,36 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:list_kuliner/detail_page.dart';
+import 'package:list_kuliner/http_helper.dart';
 import 'package:list_kuliner/makanan.dart';
 import 'package:list_kuliner/styles.dart';
 
 class ListItem extends StatelessWidget {
-  const ListItem({
-    super.key,
-    required this.menu,
-  });
+  HttpHelper api = HttpHelper();
+  final Makanan makanan;
 
-  final Makanan menu;
+  ListItem({super.key, required this.makanan, required this.api});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DetailPage(makanan: menu)));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailPage(
+              makanan: makanan,
+              api: api,
+            ),
+          ),
+        );
       },
       child: Container(
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.symmetric(vertical: 8),
         height: 100,
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            boxShadow: [
-              BoxShadow(
-                  color: Color.fromARGB(255, 188, 188, 188),
-                  offset: Offset(1, 2),
-                  blurRadius: 6)
-            ]),
+        decoration: decorBoxContainer(),
         child: Row(
           children: [
             gambar(),
@@ -43,11 +41,23 @@ class ListItem extends StatelessWidget {
     );
   }
 
+  BoxDecoration decorBoxContainer() {
+    return BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+              color: Color.fromARGB(255, 188, 188, 188),
+              offset: Offset(1, 2),
+              blurRadius: 6)
+        ]);
+  }
+
   ClipRRect gambar() {
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(10)),
       child: Image.asset(
-        menu.gambarUtama,
+        makanan.gambarUtama,
         height: 75,
         width: 85,
         fit: BoxFit.cover,
@@ -61,15 +71,15 @@ class ListItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(menu.nama, style: headerH1),
+          Text(makanan.nama, style: headerH1),
           Text(
-            menu.deskripsi,
+            makanan.deskripsi,
             style: TextStyle(color: Colors.black38),
             overflow: TextOverflow.ellipsis,
           ),
           SizedBox(height: 3),
           Text(
-            menu.harga,
+            makanan.harga,
             style: TextStyle(fontWeight: FontWeight.bold),
           )
         ],
